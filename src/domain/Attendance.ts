@@ -63,7 +63,7 @@ export class Attendance {
   /**
    * @description reads csv file as stream to get attendance data
    * @param {string} filepath
-   * @dependson sortByDateAndShift
+   * @dependson Attendance.sortByDateAndShift
    */
   static getDataFromFileStream = async (filepath: string) => {
     try {
