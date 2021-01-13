@@ -4,7 +4,12 @@ import {
   ATTENDANCE_FILE,
   ATTENDANCE_OUTPUT_FILE,
 } from "@constants/fileConstants";
-import { parseCsvDataInto, readCsvFile, writeToCsv } from "@api/fileApi";
+import {
+  parseCsvDataInto,
+  readCsvFile,
+  readCsvFileAsStream,
+  writeToCsv,
+} from "@api/fileApi";
 
 const CSV_DATA =
   "date,shift,volunteerId,volunteerName,shiftReason\r\n5/01/2021,3pm - 6pm,146,Bobita,Regular shift\r\n5/01/2021,9pm - 12am,13,Shabana,Make up shift\r\n5/01/2021,3pm - 6pm,210,Rajjak,Dropping by\r\n5/01/2021,3pm - 6pm,22,Kabori,Dropping by";
@@ -67,5 +72,15 @@ describe("test for fileApi", () => {
 
     const data = await readCsvFile(outputFile);
     expect(data).toBe(headers.concat("\r\n", mockData));
+  });
+
+  test.only("read csv file as stream", async () => {
+    const data = await readCsvFileAsStream(
+      path.join(__dirname, ATTENDANCE_FILE)
+    );
+
+    expect(data).not.toBe("");
+    expect(data.length).not.toBeFalsy();
+    expect(data).toEqual(CSV_DATA);
   });
 });

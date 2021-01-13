@@ -10,7 +10,7 @@ import {
 
 async function main() {
   try {
-    const attendanceData = await Attendance.getDataFromFile(
+    const attendanceData = await Attendance.getDataFromFileStream(
       path.join(process.cwd(), "files", ATTENDANCE_FILE)
     );
     const graph = new AttendanceGraph();

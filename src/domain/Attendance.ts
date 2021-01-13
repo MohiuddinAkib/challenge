@@ -1,6 +1,11 @@
 import { IAttendance } from "@src/types";
 import { CONNECTIONS_TABLE_HEADER } from "@constants/fileConstants";
-import { parseCsvDataInto, readCsvFile, writeToCsv } from "@src/api/fileApi";
+import {
+  writeToCsv,
+  readCsvFile,
+  parseCsvDataInto,
+  readCsvFileAsStream,
+} from "@src/api/fileApi";
 
 export class Attendance {
   constructor(private _data: IAttendance) {}
@@ -53,6 +58,32 @@ export class Attendance {
     });
 
     return attendances;
+  };
+
+  /**
+   * @description reads csv file as stream to get attendance data
+   * @param {string} filepath
+   * @dependson sortByDateAndShift
+   */
+  static getDataFromFileStream = async (filepath: string) => {
+    try {
+      const attendanceCsvData = await readCsvFileAsStream(filepath);
+
+      const parsedAttendaceData = parseCsvDataInto<IAttendance>(
+        attendanceCsvData,
+        ([date, shift, volunteerId, volunteerName, shiftReason]) => ({
+          date,
+          shift,
+          volunteerId,
+          volunteerName,
+          shiftReason,
+        })
+      );
+
+      return Attendance.sortByDateAndShift(parsedAttendaceData);
+    } catch (error) {
+      throw error;
+    }
   };
 
   /**
