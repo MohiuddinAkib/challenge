@@ -1,0 +1,1 @@
+chage _moduleAlias @src to dist after compiling the typescript
