@@ -87,7 +87,7 @@ convertedRows.forEach((currentAttendance) => { // O(N)
     }
 });
 
-// Total is 0(N * E)
+// Total is 0(N)
 
 
 ```
@@ -109,7 +109,7 @@ Complexity of finding edges and connections:
 
 ```
 
-Complexity of print the connections table:
+Complexity to print the connections table:
 ```typescript
  let data = "";
 
