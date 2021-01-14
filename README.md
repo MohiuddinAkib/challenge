@@ -61,7 +61,6 @@ end;
 &nbsp;
 ## **My adjacency list tweak to add weight:**
 >As Adjacecny list is efficient in comparison to adjacency matrix it's used in this implementaion of Graph. Then to store the neighbours of a vertex  the name (string) property of the vertex is used as identifier but that can't be used as index of our adjacency list. That's why JS map is used to overcome this limitation. Then again the neighbours of each vertex are also implemented with **Map** as list. **Array** implementation of neighbour list would require iteration to find a neighbour and increase it's weight. It would add O(N) complexity. With **Map** implementation it's now **0(1)**. As a result increasing the weight of a neighbour takes O(1) complexity.
----
 
 &nbsp;
 ## **Complexity:**
