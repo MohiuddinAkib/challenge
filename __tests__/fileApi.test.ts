@@ -74,7 +74,7 @@ describe("test for fileApi", () => {
     expect(data).toBe(headers.concat("\r\n", mockData));
   });
 
-  test.only("read csv file as stream", async () => {
+  test("read csv file as stream", async () => {
     const data = await readCsvFileAsStream(
       path.join(__dirname, ATTENDANCE_FILE)
     );
