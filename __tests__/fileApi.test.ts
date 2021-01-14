@@ -20,7 +20,7 @@ describe("test for fileApi", () => {
 
     expect(data).not.toBe("");
     expect(data.length).not.toBeFalsy();
-    expect(data).toContain(CSV_DATA);
+    expect(data).toMatch(CSV_DATA);
   });
 
   test("parse csv data", () => {
@@ -81,6 +81,6 @@ describe("test for fileApi", () => {
 
     expect(data).not.toBe("");
     expect(data.length).not.toBeFalsy();
-    expect(data).toContain(CSV_DATA);
+    expect(data).toMatch(CSV_DATA);
   });
 });
