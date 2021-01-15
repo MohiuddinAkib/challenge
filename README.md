@@ -123,3 +123,6 @@ return data.trim();
 
 ```
 ---
+&nbsp;
+## **Output file:**
+The output csv will be generated inside **files** directory
