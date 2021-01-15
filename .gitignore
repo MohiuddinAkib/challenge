@@ -3,4 +3,4 @@ dist
 .vscode
 .env
 coverage
-files/connections_table.csv
+files/connections_table
