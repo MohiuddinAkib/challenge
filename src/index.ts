@@ -8,17 +8,36 @@ import {
   ATTENDANCE_OUTPUT_FILE,
 } from "@constants/fileConstants";
 
-async function main() {
+const graph = new AttendanceGraph();
+
+const addAttendanceDataToGraph = (attendanceData: Attendance[]) => {
+  graph.connectEdgesByOverlappingShift(attendanceData);
+};
+
+const onReadingError = (error: Error) => {
+  console.error(error);
+};
+
+const writeAttendanceDataToCsv = async () => {
   try {
-    const attendanceData = await Attendance.getDataFromFileStream(
-      path.join(process.cwd(), "files", ATTENDANCE_FILE)
-    );
-    const graph = new AttendanceGraph();
-    graph.connectEdgesByOverlappingShift(attendanceData);
     const table = graph.printConnectionTable();
+
     await Attendance.printConnectionsToCsvFile(
       path.join(process.cwd(), "files", ATTENDANCE_OUTPUT_FILE),
       table
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+function main() {
+  try {
+    Attendance.getDataFromFileStream(
+      path.join(process.cwd(), "files", ATTENDANCE_FILE),
+      addAttendanceDataToGraph,
+      writeAttendanceDataToCsv,
+      onReadingError
     );
   } catch (error) {
     console.error(error);

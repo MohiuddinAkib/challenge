@@ -4,25 +4,25 @@ import { createReadStream, createWriteStream } from "fs";
 /**
  * @description reads csv file as stream and return data
  * @param {string} filepath
+ * @param {(data: Array<Attendance>) => void} onData
+ * @param {() => void} onComplete
+ * @param {(error: Error) => void} onError
  */
-export const readCsvFileAsStream = (filepath: string): Promise<string> => {
-  let data = "";
-
-  return new Promise((resolve, reject) => {
-    const readStream = createReadStream(filepath, {
-      encoding: "utf-8",
-    });
-
-    readStream.on("data", (newData) => {
-      data += newData;
-    });
-
-    readStream.on("end", () => {
-      resolve(data.trim());
-    });
-
-    readStream.on("error", reject);
+export const readCsvFileAsStream = (
+  filepath: string,
+  onData: (data: string) => void,
+  onComplete: () => void,
+  onError: (error: Error) => void
+) => {
+  const readStream = createReadStream(filepath, {
+    encoding: "utf-8",
   });
+
+  readStream.on("data", (csvData) => onData(csvData.toString().trim()));
+
+  readStream.on("end", onComplete);
+
+  readStream.on("error", onError);
 };
 
 /**

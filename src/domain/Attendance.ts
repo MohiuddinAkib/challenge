@@ -63,27 +63,36 @@ export class Attendance {
   /**
    * @description reads csv file as stream to get attendance data
    * @param {string} filepath
+   * @param {(data: Array<Attendance>) => void} onData
+   * @param {() => void} onComplete
+   * @param {(error: Error) => void} onError
    * @dependson Attendance.sortByDateAndShift
    */
-  static getDataFromFileStream = async (filepath: string) => {
-    try {
-      const attendanceCsvData = await readCsvFileAsStream(filepath);
+  static getDataFromFileStream = (
+    filepath: string,
+    onData: (data: Array<Attendance>) => void,
+    onComplete: () => void,
+    onError: (error: Error) => void
+  ) => {
+    readCsvFileAsStream(
+      filepath,
+      (attendanceCsvData) => {
+        const parsedAttendaceData = parseCsvDataInto<IAttendance>(
+          attendanceCsvData,
+          ([date, shift, volunteerId, volunteerName, shiftReason]) => ({
+            date,
+            shift,
+            volunteerId,
+            volunteerName,
+            shiftReason,
+          })
+        );
 
-      const parsedAttendaceData = parseCsvDataInto<IAttendance>(
-        attendanceCsvData,
-        ([date, shift, volunteerId, volunteerName, shiftReason]) => ({
-          date,
-          shift,
-          volunteerId,
-          volunteerName,
-          shiftReason,
-        })
-      );
-
-      return Attendance.sortByDateAndShift(parsedAttendaceData);
-    } catch (error) {
-      throw error;
-    }
+        onData(Attendance.sortByDateAndShift(parsedAttendaceData));
+      },
+      onComplete,
+      onError
+    );
   };
 
   /**

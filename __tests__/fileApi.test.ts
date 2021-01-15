@@ -74,13 +74,21 @@ describe("test for fileApi", () => {
     expect(data).toBe(headers.concat("\r\n", mockData));
   });
 
-  test("read csv file as stream", async () => {
-    const data = await readCsvFileAsStream(
-      path.join(__dirname, ATTENDANCE_FILE)
-    );
+  test("read csv file as stream", (done) => {
+    let data = "";
 
-    expect(data).not.toBe("");
-    expect(data.length).not.toBeFalsy();
-    expect(data).toMatch(CSV_DATA);
+    readCsvFileAsStream(
+      path.join(__dirname, ATTENDANCE_FILE),
+      (attendanceData) => {
+        data += attendanceData;
+      },
+      () => {
+        expect(data).not.toBe("");
+        expect(data.length).not.toBeFalsy();
+        expect(data).toMatch(CSV_DATA);
+        done();
+      },
+      console.error
+    );
   });
 });

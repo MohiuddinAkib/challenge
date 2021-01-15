@@ -36,12 +36,14 @@ export class AttendanceGraph extends AbsTractBaseGraph<
   connectEdgesByOverlappingShift = (convertedRows: Attendance[]) => {
     for (let rowIndex = 0; rowIndex < convertedRows.length; rowIndex++) {
       const row = convertedRows[rowIndex];
-      for (
-        let j = rowIndex + 1;
-        j < convertedRows.length && row.hasOverlappingShift(convertedRows[j]);
-        j++
+      let j = rowIndex + 1;
+
+      while (
+        j < convertedRows.length &&
+        row.hasOverlappingShift(convertedRows[j])
       ) {
         this.addEdge(row.volunteerName, convertedRows[j].volunteerName);
+        j++;
       }
     }
   };
